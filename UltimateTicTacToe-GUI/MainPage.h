@@ -18,6 +18,8 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		void RenderGameBoard();
 		void OpenHelp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
+		void HandleGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+
 	private:
 		std::unique_ptr<Game> m_gameBoard = nullptr;
 	};

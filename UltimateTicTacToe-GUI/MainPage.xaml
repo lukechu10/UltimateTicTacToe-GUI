@@ -23,6 +23,7 @@
             </Button.Flyout>
         </Button>
         <Button Click="OpenHelp" Margin="20,20,0,0" VerticalAlignment="Top">How to play</Button>
+        <TextBlock x:Name="ClickLocation" Text="" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         <Grid x:Name="GameBoardContainer" Margin="0,66,0,197" HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="10" ColumnSpacing="10" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100px" />
