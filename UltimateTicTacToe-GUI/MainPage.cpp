@@ -20,17 +20,17 @@ void MainPage::MyProperty(int32_t /* value */) {
 	throw hresult_not_implemented();
 }
 
-void MainPage::newGameButton_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&) {
+void MainPage::newGameButton_Click(IInspectable const&, RoutedEventArgs const&) {
 	m_gameBoard = make_unique<Game>();
 
-	GameBoardUpdated();
+	RenderGameBoard();
 	NewGameControl().Flyout().Hide(); // hide flyout
 }
 
-void MainPage::GameBoardUpdated() {
+void MainPage::RenderGameBoard() {
 	if (m_gameBoard != nullptr) {
 		// game board is not a nullptr, render game
-		
+
 		// reset game board
 		GameBoardContainer().Children().Clear();
 
@@ -53,9 +53,23 @@ void MainPage::GameBoardUpdated() {
 
 				for (size_t row = 0; row < boardSize; row++) {
 					for (size_t col = 0; col < boardSize; col++) {
-						Controls::Button button;
-						hstring buttonStr = winrt::to_hstring(playerToString(m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col]));
+						Controls::Button button; // button control
+						hstring buttonStr; // button content
+
+						switch (m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col]) {
+						case Player::X:
+							buttonStr = L"X";
+							break;
+						case Player::O:
+							buttonStr = L"O";
+							break;
+						default:
+							buttonStr = L" ";
+							break;
+						}
+
 						button.Content(box_value(buttonStr)); // get board data and set it to button content
+						button.Style(Resources().TryLookup(box_value(L"ButtonRevealStyle")).as<Windows::UI::Xaml::Style>());
 						button.Width(30);
 						button.Height(30);
 
@@ -74,7 +88,6 @@ void MainPage::GameBoardUpdated() {
 	}
 }
 
-
-void MainPage::OpenHelp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e) {
+void MainPage::OpenHelp(IInspectable const& sender, RoutedEventArgs const& e) {
 	Windows::System::Launcher::LaunchUriAsync(Windows::Foundation::Uri(L"https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe#Rules"));
 }
