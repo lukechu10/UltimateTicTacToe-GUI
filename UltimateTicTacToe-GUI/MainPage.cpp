@@ -42,6 +42,7 @@ void MainPage::RenderGameBoard() {
 				Controls::Grid quadrantGrid;
 				quadrantGrid.RowSpacing(3);
 				quadrantGrid.ColumnSpacing(3);
+				quadrantGrid.Style(Resources().Lookup(box_value(L"QuadrantGrid")).as<Windows::UI::Xaml::Style>());
 
 				// add grid row and column definitions
 				for (size_t i = 0; i < boardSize; i++) {
@@ -68,9 +69,9 @@ void MainPage::RenderGameBoard() {
 							break;
 						}
 
-						button.Content(box_value(buttonStr));																 // get board data and set it to button content
-						button.Style(Resources().TryLookup(box_value(L"ButtonRevealStyle")).as<Windows::UI::Xaml::Style>()); // set reveal style for button
-						button.Click({ this, &MainPage::HandleGameButtonClick });											 // attach click event handler
+						button.Content(box_value(buttonStr));															  // get board data and set it to button content
+						button.Style(Resources().Lookup(box_value(L"ButtonRevealStyle")).as<Windows::UI::Xaml::Style>()); // set reveal style for button
+						button.Click({ this, &MainPage::HandleGameButtonClick });										  // attach click event handler
 						button.Width(30);
 						button.Height(30);
 
@@ -86,6 +87,9 @@ void MainPage::RenderGameBoard() {
 				GameBoardContainer().SetColumn(quadrantGrid, quadrantCol);
 			}
 		}
+
+		// player can play anywhere initially
+		UpdateGameBoardNextQuadrant();
 	}
 }
 
@@ -97,6 +101,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 	Controls::Button button = sender.as<Controls::Button>();			// current target
 	Controls::Grid quadrantGrid = button.Parent().as<Controls::Grid>(); // get quadrant board (parent of button)
 	Controls::Grid mainGrid = quadrantGrid.Parent().as<Controls::Grid>();
+	assert(mainGrid == GameBoardContainer());
 
 	uint32_t row = quadrantGrid.GetRow(button);	   // sub row
 	uint32_t col = quadrantGrid.GetColumn(button); // sub col
@@ -106,4 +111,52 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 	ClickLocation().Text(
 		L"Row: " + to_hstring(row) + L" Col: " + to_hstring(col) +
 		L" Quadrant Row: " + to_hstring(quadrantRow) + L" Quadrant Col: " + to_hstring(quadrantCol));
+
+	// construct Play object
+	Play play(quadrantRow, quadrantCol, row, col);
+
+	// apply Play to GameBoard
+	m_gameBoard->applyMove(play);
+
+
+	// update GameBoard UI
+	Player player = m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col];
+	switch (player) {
+	case Player::X:
+		button.Content(box_value(L"X"));
+		break;
+	case Player::O:
+		button.Content(box_value(L"O"));
+		break;
+	default:
+		button.Content(box_value(L" "));
+	}
+
+	// update GameBoard UI next quadrant
+	UpdateGameBoardNextQuadrant();
+}
+
+void MainPage::UpdateGameBoardNextQuadrant() {
+	const int32_t nextRow = m_gameBoard->getNextCoor().first;
+	const int32_t nextCol = m_gameBoard->getNextCoor().second;
+
+	NextQuadrantLocationText().Text(
+		L"Next row: " + to_hstring(nextRow) + L" Next col: " + to_hstring(nextCol));
+
+	for (auto& child : GameBoardContainer().Children())
+	// iterate through all quadrant grids
+	{
+		Controls::Grid grid = child.as<Controls::Grid>();
+		// check if grid is next quadrant
+		int32_t row = GameBoardContainer().GetRow(grid);
+		int32_t col = GameBoardContainer().GetColumn(grid);
+
+		if ((nextRow == -1 && nextCol == -1) /* player can play anywhere */
+			|| m_gameBoard->getWinCache()[nextRow][nextCol] == Player::X || m_gameBoard->getWinCache()[nextRow][nextCol] == Player::O || (nextRow == row && nextCol == col)) {
+			grid.Style(Resources().Lookup(box_value(L"NextQuadrant")).as<Windows::UI::Xaml::Style>()); // purple highlight
+		}
+		else {
+			grid.Style(Resources().Lookup(box_value(L"QuadrantGrid")).as<Windows::UI::Xaml::Style>());
+		}
+	}
 }
