@@ -113,27 +113,42 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		L" Quadrant Row: " + to_hstring(quadrantRow) + L" Quadrant Col: " + to_hstring(quadrantCol));
 
 	// construct Play object
-	Play play(quadrantRow, quadrantCol, row, col);
+	Play userPlay(quadrantRow, quadrantCol, row, col);
 
-	// apply Play to GameBoard
-	m_gameBoard->applyMove(play);
+	// check if Play is valid
+	auto& plays = m_gameBoard->moves();
+
+	bool isValid = false;
+	for (auto& play : plays)
+		if (play == userPlay)
+			isValid = true;
+
+	if (isValid) {
+		ËrrorMessageText().Text(L""); // remove error message
+
+		// apply Play to GameBoard
+		m_gameBoard->applyMove(userPlay);
 
 
-	// update GameBoard UI
-	Player player = m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col];
-	switch (player) {
-	case Player::X:
-		button.Content(box_value(L"X"));
-		break;
-	case Player::O:
-		button.Content(box_value(L"O"));
-		break;
-	default:
-		button.Content(box_value(L" "));
+		// update GameBoard UI
+		Player player = m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col];
+		switch (player) {
+		case Player::X:
+			button.Content(box_value(L"X"));
+			break;
+		case Player::O:
+			button.Content(box_value(L"O"));
+			break;
+		default:
+			button.Content(box_value(L" "));
+		}
+
+		// update GameBoard UI next quadrant
+		UpdateGameBoardNextQuadrant();
 	}
-
-	// update GameBoard UI next quadrant
-	UpdateGameBoardNextQuadrant();
+	else {
+		ËrrorMessageText().Text(L"That move is not availible!");
+	}
 }
 
 void MainPage::UpdateGameBoardNextQuadrant() {

@@ -42,6 +42,7 @@
         </StackPanel>
         <TextBlock x:Name="ClickLocation" Text="" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
         <TextBlock x:Name="NextQuadrantLocationText" Text="" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}"/>
+        <TextBlock x:Name="ËrrorMessageText" Text="" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="#FFBD0000"/>
         <Grid x:Name="GameBoardContainer" Margin="0,66,0,197" HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="10" ColumnSpacing="10" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="110px" />
