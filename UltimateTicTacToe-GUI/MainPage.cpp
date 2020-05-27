@@ -124,7 +124,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 			isValid = true;
 
 	if (!m_gameBoard->isTerminal() && isValid) {
-		ËrrorMessageText().Text(L""); // remove error message
+		ErrorMessageText().Text(L""); // remove error message
 
 		// apply Play to GameBoard
 		m_gameBoard->applyMove(userPlay);
@@ -147,7 +147,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		UpdateGameBoardQuadrants();
 	}
 	else {
-		ËrrorMessageText().Text(L"That move is not availible!");
+		ErrorMessageText().Text(L"That move is not availible!");
 	}
 }
 
