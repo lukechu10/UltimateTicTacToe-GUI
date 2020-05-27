@@ -123,7 +123,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		if (play == userPlay)
 			isValid = true;
 
-	if (isValid) {
+	if (!m_gameBoard->isTerminal() && isValid) {
 		ËrrorMessageText().Text(L""); // remove error message
 
 		// apply Play to GameBoard
