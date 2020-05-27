@@ -12,7 +12,7 @@
 
     <Page.Resources>
         <Style x:Key="QuadrantGrid" TargetType="Grid">
-            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
@@ -20,6 +20,20 @@
             <Setter Property="Background">
                 <Setter.Value>
                     <AcrylicBrush TintColor="#CC4F48B0"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="QuadrantXWin" TargetType="Grid" BasedOn="{StaticResource QuadrantGrid}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <AcrylicBrush TintColor="#CCDD2B2B"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="QuadrantOWin" TargetType="Grid" BasedOn="{StaticResource QuadrantGrid}">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <AcrylicBrush TintColor="#CC3FB148"/>
                 </Setter.Value>
             </Setter>
         </Style>

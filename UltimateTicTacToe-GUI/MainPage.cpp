@@ -89,7 +89,7 @@ void MainPage::RenderGameBoard() {
 		}
 
 		// player can play anywhere initially
-		UpdateGameBoardNextQuadrant();
+		UpdateGameBoardQuadrants();
 	}
 }
 
@@ -144,14 +144,14 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		}
 
 		// update GameBoard UI next quadrant
-		UpdateGameBoardNextQuadrant();
+		UpdateGameBoardQuadrants();
 	}
 	else {
 		ËrrorMessageText().Text(L"That move is not availible!");
 	}
 }
 
-void MainPage::UpdateGameBoardNextQuadrant() {
+void MainPage::UpdateGameBoardQuadrants() {
 	const int32_t nextRow = m_gameBoard->getNextCoor().first;
 	const int32_t nextCol = m_gameBoard->getNextCoor().second;
 
@@ -162,11 +162,18 @@ void MainPage::UpdateGameBoardNextQuadrant() {
 	// iterate through all quadrant grids
 	{
 		Controls::Grid grid = child.as<Controls::Grid>();
-		// check if grid is next quadrant
+		
 		int32_t row = GameBoardContainer().GetRow(grid);
 		int32_t col = GameBoardContainer().GetColumn(grid);
 
-		if ((nextRow == -1 && nextCol == -1) /* player can play anywhere */
+		if (m_gameBoard->getWinCache()[row][col] == Player::X) {
+			grid.Style(Resources().Lookup(box_value(L"QuadrantXWin")).as<Windows::UI::Xaml::Style>()); // red highlight
+		}
+		else if (m_gameBoard->getWinCache()[row][col] == Player::O) {
+			grid.Style(Resources().Lookup(box_value(L"QuadrantOWin")).as<Windows::UI::Xaml::Style>()); // green highlight
+		}
+		// check if grid is next quadrant
+		else if ((nextRow == -1 && nextCol == -1) /* player can play anywhere */
 			|| m_gameBoard->getWinCache()[nextRow][nextCol] == Player::X || m_gameBoard->getWinCache()[nextRow][nextCol] == Player::O || (nextRow == row && nextCol == col)) {
 			grid.Style(Resources().Lookup(box_value(L"NextQuadrant")).as<Windows::UI::Xaml::Style>()); // purple highlight
 		}
