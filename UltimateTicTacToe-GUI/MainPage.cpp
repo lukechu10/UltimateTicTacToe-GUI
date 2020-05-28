@@ -162,7 +162,7 @@ void MainPage::UpdateGameBoardQuadrants() {
 	// iterate through all quadrant grids
 	{
 		Controls::Grid grid = child.as<Controls::Grid>();
-		
+
 		int32_t row = GameBoardContainer().GetRow(grid);
 		int32_t col = GameBoardContainer().GetColumn(grid);
 
@@ -174,7 +174,7 @@ void MainPage::UpdateGameBoardQuadrants() {
 		}
 		// check if grid is next quadrant
 		else if ((nextRow == -1 && nextCol == -1) /* player can play anywhere */
-			|| m_gameBoard->getWinCache()[nextRow][nextCol] == Player::X || m_gameBoard->getWinCache()[nextRow][nextCol] == Player::O || (nextRow == row && nextCol == col)) {
+				 || m_gameBoard->getWinCache()[nextRow][nextCol] != Player::None || (nextRow == row && nextCol == col)) {
 			grid.Style(Resources().Lookup(box_value(L"NextQuadrant")).as<Windows::UI::Xaml::Style>()); // purple highlight
 		}
 		else {
