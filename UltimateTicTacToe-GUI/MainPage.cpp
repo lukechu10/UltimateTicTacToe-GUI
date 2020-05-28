@@ -5,6 +5,7 @@
 using namespace std;
 using namespace winrt;
 using namespace Windows::UI::Xaml;
+using namespace Windows::Foundation;
 
 using namespace winrt::UltimateTicTacToe_GUI::implementation;
 
@@ -108,10 +109,6 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 	uint32_t quadrantRow = mainGrid.GetRow(quadrantGrid);
 	uint32_t quadrantCol = mainGrid.GetColumn(quadrantGrid);
 
-	ClickLocation().Text(
-		L"Row: " + to_hstring(row) + L" Col: " + to_hstring(col) +
-		L" Quadrant Row: " + to_hstring(quadrantRow) + L" Quadrant Col: " + to_hstring(quadrantCol));
-
 	// construct Play object
 	Play userPlay(quadrantRow, quadrantCol, row, col);
 
@@ -123,12 +120,16 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		if (play == userPlay)
 			isValid = true;
 
-	if (!m_gameBoard->isTerminal() && isValid) {
+	if (m_gameBoard->isTerminal()) {
+		ErrorMessageText().Text(L"The game has ended. Start a new game by clicking on the button.");
+	}
+	else if (isValid) {
+		assert(!m_gameBoard->isTerminal()); // terminal game should be handled by first case
+
 		ErrorMessageText().Text(L""); // remove error message
 
 		// apply Play to GameBoard
 		m_gameBoard->applyMove(userPlay);
-
 
 		// update GameBoard UI
 		Player player = m_gameBoard->getBoard()[quadrantRow][quadrantCol][row][col];
@@ -143,10 +144,14 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 			button.Content(box_value(L" "));
 		}
 
-		// update GameBoard UI next quadrant
 		UpdateGameBoardQuadrants();
+		if (m_gameBoard->isTerminal()) {
+			ShowGameWinner();
+		}
 	}
 	else {
+		assert(!m_gameBoard->isTerminal() && !isValid);
+
 		ErrorMessageText().Text(L"That move is not availible!");
 	}
 }
@@ -154,9 +159,6 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 void MainPage::UpdateGameBoardQuadrants() {
 	const int32_t nextRow = m_gameBoard->getNextCoor().first;
 	const int32_t nextCol = m_gameBoard->getNextCoor().second;
-
-	NextQuadrantLocationText().Text(
-		L"Next row: " + to_hstring(nextRow) + L" Next col: " + to_hstring(nextCol));
 
 	for (auto& child : GameBoardContainer().Children())
 	// iterate through all quadrant grids
@@ -181,4 +183,39 @@ void MainPage::UpdateGameBoardQuadrants() {
 			grid.Style(Resources().Lookup(box_value(L"QuadrantGrid")).as<Windows::UI::Xaml::Style>());
 		}
 	}
+}
+
+IAsyncAction MainPage::ShowGameWinner() {
+	auto winner = m_gameBoard->winner();
+
+	hstring winnerString;
+	switch (winner) {
+	case Player::X:
+		winnerString = L"Player X Won!";
+		break;
+	case Player::O:
+		winnerString = L"Player O Won!";
+		break;
+	default:
+		winnerString = L"Tie!";
+		break;
+	}
+
+#pragma region ShowWinnerContentDialog
+	Controls::ContentDialog winnerDialog;
+	winnerDialog.Title(box_value(winnerString));
+	winnerDialog.PrimaryButtonText(L"Start a new game");
+	winnerDialog.SecondaryButtonText(L"View result");
+
+	Controls::ContentDialogResult dialogResult = co_await winnerDialog.ShowAsync();
+
+	if (dialogResult == Controls::ContentDialogResult::Primary) {
+		// create a new game
+		m_gameBoard = make_unique<Game>();
+		RenderGameBoard();
+	}
+	/*else if (dialogResult == Controls::ContentDialogResult::Secondary) {
+		// hide dialog
+	}*/
+#pragma endregion
 }

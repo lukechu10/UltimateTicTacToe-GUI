@@ -21,6 +21,7 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		void HandleGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
 		void UpdateGameBoardQuadrants();
+		Windows::Foundation::IAsyncAction ShowGameWinner();
 	private:
 		std::unique_ptr<Game> m_gameBoard = nullptr;
 	};

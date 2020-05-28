@@ -54,8 +54,7 @@
             </Button>
             <Button Click="OpenHelp" Margin="20,20,0,0" VerticalAlignment="Top">How to play</Button>
         </StackPanel>
-        <TextBlock x:Name="ClickLocation" Text="" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-        <TextBlock x:Name="NextQuadrantLocationText" Text="" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}"/>
+
         <TextBlock x:Name="ErrorMessageText" Text="" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="#FFBD0000"/>
         <Grid x:Name="GameBoardContainer" Margin="0,66,0,197" HorizontalAlignment="Center" VerticalAlignment="Center" RowSpacing="10" ColumnSpacing="10" Visibility="Visible">
             <Grid.RowDefinitions>
@@ -71,5 +70,4 @@
 
         </Grid>
     </StackPanel>
-
 </Page>
