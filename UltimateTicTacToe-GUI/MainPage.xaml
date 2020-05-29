@@ -47,7 +47,7 @@
                     <Flyout>
                         <StackPanel>
                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}">Are you sure you want to start a new game?</TextBlock>
-                            <Button x:Name="newGameButton" Margin="0,10,0,0" Click="newGameButton_Click">Start a new game</Button>
+                            <Button Margin="0,10,0,0" Click="HandleNewGameButtonClick">Start a new game</Button>
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>

@@ -13,7 +13,7 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		int32_t MyProperty();
 		void MyProperty(int32_t value);
 
-		void newGameButton_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+		void HandleNewGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
 		void RenderGameBoard();
 		void OpenHelp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
