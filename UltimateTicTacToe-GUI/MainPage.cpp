@@ -16,14 +16,6 @@ MainPage::MainPage() {
 	InitializeComponent();
 }
 
-int32_t MainPage::MyProperty() {
-	throw hresult_not_implemented();
-}
-
-void MainPage::MyProperty(int32_t /* value */) {
-	throw hresult_not_implemented();
-}
-
 void MainPage::HandleNewGameButtonClick(IInspectable const&, RoutedEventArgs const&) {
 	m_gameBoard = make_unique<Game>();
 

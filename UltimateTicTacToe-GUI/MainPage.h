@@ -10,9 +10,6 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 	struct MainPage : MainPageT<MainPage> {
 		MainPage();
 
-		int32_t MyProperty();
-		void MyProperty(int32_t value);
-
 		void HandleNewGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
 		void RenderGameBoard();
