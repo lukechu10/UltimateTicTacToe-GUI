@@ -24,7 +24,7 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		Windows::Foundation::IAsyncAction ShowGameWinner();
 	private:
 		// computes the best move and mutates m_gameBoard
-		void AiTurn();
+		Windows::Foundation::IAsyncAction AiTurn();
 
 		std::unique_ptr<Game> m_gameBoard = nullptr;
 

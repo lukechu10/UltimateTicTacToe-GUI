@@ -157,7 +157,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		}
 	}
 	else {
-		assert(!m_gameBoard->isTerminal() && !isValid);
+		assert((!m_gameBoard->isTerminal() && !isValid) || !m_isPlayerTurn);
 
 		ErrorMessageText().Text(L"That move is not availible!");
 	}
@@ -227,12 +227,17 @@ IAsyncAction MainPage::ShowGameWinner() {
 #pragma endregion
 }
 
-void MainPage::AiTurn() {
+IAsyncAction MainPage::AiTurn() {
+	apartment_context uiThread; // capture calling context
+	co_await resume_background();
+
 #pragma region ComputeMove
 	MCTS mcts(*m_gameBoard);		 // create MCTS agent
 	mcts.runSearch(1000);			 // allow 1 sec (1000 ms) for MCTS
 	auto bestMove = mcts.bestMove(); // retreive best move
 #pragma endregion
+	co_await uiThread; // switch back to calling context
+
 	m_gameBoard->applyMove(bestMove.bestPlay);
 
 	// update GameBoard UI
@@ -272,4 +277,6 @@ void MainPage::AiTurn() {
 	if (m_gameBoard->isTerminal()) {
 		ShowGameWinner();
 	}
+
+	co_return;
 }
