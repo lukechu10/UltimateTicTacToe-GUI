@@ -204,6 +204,7 @@ IAsyncAction MainPage::ShowGameWinner() {
 	Controls::ContentDialog winnerDialog;
 	winnerDialog.Title(box_value(winnerString));
 	winnerDialog.PrimaryButtonText(L"Start a new game");
+	winnerDialog.PrimaryButtonStyle(Resources().Lookup(box_value(L"AccentButtonStyle")).as<Windows::UI::Xaml::Style>());
 	winnerDialog.SecondaryButtonText(L"View result");
 
 	Controls::ContentDialogResult dialogResult = co_await winnerDialog.ShowAsync();

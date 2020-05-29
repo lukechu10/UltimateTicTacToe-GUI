@@ -6,9 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.Background>
-        <AcrylicBrush BackgroundSource="HostBackdrop" TintOpacity="0.795" TintColor="#CC2A2A2A"/>
-    </Page.Background>
 
     <Page.Resources>
         <Style x:Key="QuadrantGrid" TargetType="Grid">
@@ -40,8 +37,9 @@
     </Page.Resources>
 
     <StackPanel>
+        
         <StackPanel Orientation="Horizontal">
-            <Button x:Name="NewGameControl" Margin="20,20,0,0" VerticalAlignment="Top">
+            <Button x:Name="NewGameControl" Margin="20,20,0,0" VerticalAlignment="Top" Style="{StaticResource AccentButtonStyle}">
                 New Game
                 <Button.Flyout>
                     <Flyout>
