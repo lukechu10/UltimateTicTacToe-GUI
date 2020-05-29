@@ -44,7 +44,7 @@ const vector<Play>& Game::moves() const {
 	return moveCache;
 }
 
-void Game::applyMove(Play& p) {
+void Game::applyMove(const Play& p) {
 	board[p.row][p.col][p.subRow][p.subCol] = playerToMove_;
 	// toggle player to move
 	playerToMove_ = playerToMove_ == Player::X ? Player::O : Player::X;
@@ -99,7 +99,7 @@ Player Game::checkGlobalWin() const {
 	// Win check
 }
 
-void Game::updateWinCache(Play& p) {
+void Game::updateWinCache(const Play& p) {
 	// check for win in sub gameboard
 	auto& subBoard = board[p.row][p.col];
 

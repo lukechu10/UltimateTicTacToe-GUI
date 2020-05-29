@@ -7,10 +7,15 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="MCTS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="IGameState.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="MCTS.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
@@ -38,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
+    <None Include=".clang-format" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

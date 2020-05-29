@@ -23,7 +23,13 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		void UpdateGameBoardQuadrants();
 		Windows::Foundation::IAsyncAction ShowGameWinner();
 	private:
+		// computes the best move and mutates m_gameBoard
+		void AiTurn();
+
 		std::unique_ptr<Game> m_gameBoard = nullptr;
+
+		// X always starts and X is player
+		bool m_isPlayerTurn = true;
 	};
 }
 

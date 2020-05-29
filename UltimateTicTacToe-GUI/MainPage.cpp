@@ -2,6 +2,9 @@
 #include "MainPage.h"
 #include "MainPage.g.cpp"
 
+#include "MCTS.h"
+#include "Node.h"
+
 using namespace std;
 using namespace winrt;
 using namespace Windows::UI::Xaml;
@@ -123,7 +126,7 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 	if (m_gameBoard->isTerminal()) {
 		ErrorMessageText().Text(L"The game has ended. Start a new game by clicking on the button.");
 	}
-	else if (isValid) {
+	else if (isValid && m_isPlayerTurn) {
 		assert(!m_gameBoard->isTerminal()); // terminal game should be handled by first case
 
 		ErrorMessageText().Text(L""); // remove error message
@@ -145,8 +148,12 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 		}
 
 		UpdateGameBoardQuadrants();
+		m_isPlayerTurn = false;
 		if (m_gameBoard->isTerminal()) {
 			ShowGameWinner();
+		}
+		else {
+			AiTurn(); // compute turn
 		}
 	}
 	else {
@@ -218,4 +225,51 @@ IAsyncAction MainPage::ShowGameWinner() {
 		// hide dialog
 	}*/
 #pragma endregion
+}
+
+void MainPage::AiTurn() {
+#pragma region ComputeMove
+	MCTS mcts(*m_gameBoard);		 // create MCTS agent
+	mcts.runSearch(1000);			 // allow 1 sec (1000 ms) for MCTS
+	auto bestMove = mcts.bestMove(); // retreive best move
+#pragma endregion
+	m_gameBoard->applyMove(bestMove.bestPlay);
+
+	// update GameBoard UI
+	Player player = m_gameBoard->getBoard()[bestMove.bestPlay.row][bestMove.bestPlay.col]
+										   [bestMove.bestPlay.subRow][bestMove.bestPlay.subCol];
+
+	for (const auto& child : GameBoardContainer().Children()) {
+		const auto& quadrantGrid = child.as<Controls::Grid>();
+
+		if (GameBoardContainer().GetRow(quadrantGrid) == bestMove.bestPlay.row && GameBoardContainer().GetColumn(quadrantGrid) == bestMove.bestPlay.col) {
+			for (const auto& quadrantChild : quadrantGrid.Children()) {
+				const auto button = quadrantChild.as<Controls::Button>();
+				
+				if (quadrantGrid.GetRow(button) == bestMove.bestPlay.subRow && quadrantGrid.GetColumn(button) == bestMove.bestPlay.subCol) {
+					switch (player) {
+					case Player::X:
+						button.Content(box_value(L"X"));
+						break;
+					case Player::O:
+						button.Content(box_value(L"O"));
+						break;
+					default:
+						button.Content(box_value(L" "));
+					}
+
+					break; // stop searching
+				}
+			}
+
+			break; // stop searching
+		}	
+	}
+
+	m_isPlayerTurn = true;
+	UpdateGameBoardQuadrants();
+
+	if (m_gameBoard->isTerminal()) {
+		ShowGameWinner();
+	}
 }

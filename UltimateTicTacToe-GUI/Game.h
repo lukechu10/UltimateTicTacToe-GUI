@@ -47,7 +47,7 @@ public:
 	Game();
 	Player playerToMove() const { return playerToMove_; }
 	const std::vector<Play>& moves() const;
-	void applyMove(Play& p);
+	void applyMove(const Play& p);
 	Player winner() const;
 	bool isTerminal() const;
 	Play lastPlay() const { return lastPlay_; }
@@ -65,7 +65,7 @@ public:
 private:
 	Player checkGlobalWin() const;
 
-	void updateWinCache(Play& p);
+	void updateWinCache(const Play& p);
 
 	void updateMoveCache();
 	std::vector<Play> moveCache; // store moves for current state for reuse
