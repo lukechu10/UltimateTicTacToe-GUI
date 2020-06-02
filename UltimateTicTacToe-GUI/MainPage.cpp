@@ -17,9 +17,14 @@ MainPage::MainPage() {
 }
 
 void MainPage::HandleNewGameButtonClick(IInspectable const&, RoutedEventArgs const&) {
+	StartNewGame();
+}
+
+void MainPage::StartNewGame() {
 	m_gameBoard = make_unique<Game>();
 
 	RenderGameBoard();
+	ErrorMessageText().Text(L""); // reset error message
 	NewGameControl().Flyout().Hide(); // hide flyout
 }
 
@@ -211,8 +216,7 @@ IAsyncAction MainPage::ShowGameWinner() {
 
 	if (dialogResult == Controls::ContentDialogResult::Primary) {
 		// create a new game
-		m_gameBoard = make_unique<Game>();
-		RenderGameBoard();
+		StartNewGame();
 	}
 	/*else if (dialogResult == Controls::ContentDialogResult::Secondary) {
 		// hide dialog

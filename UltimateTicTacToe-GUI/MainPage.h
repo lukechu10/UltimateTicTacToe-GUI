@@ -11,6 +11,7 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		MainPage();
 
 		void HandleNewGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+		void StartNewGame();
 
 		void RenderGameBoard();
 		void OpenHelp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
