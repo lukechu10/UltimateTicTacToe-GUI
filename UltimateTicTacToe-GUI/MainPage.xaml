@@ -12,25 +12,30 @@
             <Setter Property="CornerRadius" Value="4"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="3"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <AcrylicBrush TintColor="#CCBEBEBE" TintOpacity="0.2"/>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style x:Key="NextQuadrant" TargetType="Grid" BasedOn="{StaticResource QuadrantGrid}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <AcrylicBrush TintColor="#CC4F48B0"/>
+                    <AcrylicBrush TintColor="#CC514BAA" TintOpacity="0.7"/>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="QuadrantXWin" TargetType="Grid" BasedOn="{StaticResource QuadrantGrid}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <AcrylicBrush TintColor="#CCDD2B2B"/>
+                    <AcrylicBrush TintColor="#CCDD2B2B" TintOpacity="0.7"/>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="QuadrantOWin" TargetType="Grid" BasedOn="{StaticResource QuadrantGrid}">
             <Setter Property="Background">
                 <Setter.Value>
-                    <AcrylicBrush TintColor="#CC3FB148"/>
+                    <AcrylicBrush TintColor="#CC3FB148" TintOpacity="0.7"/>
                 </Setter.Value>
             </Setter>
         </Style>
