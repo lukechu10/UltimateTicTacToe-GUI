@@ -65,6 +65,7 @@
                                 <AcrylicBrush TintColor="Red" TintOpacity="0.7"/>
                             </Setter.Value>
                         </Setter>
+                        <Setter Target="PlayerXPanelStatus.Text" Value="Waiting for user selection..."/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="OTurn">
@@ -74,6 +75,7 @@
                                 <AcrylicBrush TintColor="#FF41DC30" TintOpacity="0.7"/>
                             </Setter.Value>
                         </Setter>
+                        <Setter Target="PlayerOPanelStatus.Text" Value="Computing move..."/>
                     </VisualState.Setters>
 
                 </VisualState>
@@ -106,10 +108,12 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" x:Name="PlayerXPanel" Style="{StaticResource StatusStackPanel}">
-                <TextBlock Text="Player X" Style="{ThemeResource BaseTextBlockStyle}"/>
+                <TextBlock Text="X - Player" Style="{ThemeResource BaseTextBlockStyle}"/>
+                <TextBlock x:Name="PlayerXPanelStatus" Text=""/>
             </StackPanel>
             <StackPanel Grid.Column="1" x:Name="PlayerOPanel"  Style="{StaticResource StatusStackPanel}">
-                <TextBlock Text="Player O" Style="{ThemeResource BaseTextBlockStyle}"/>
+                <TextBlock Text="O - Computer" Style="{ThemeResource BaseTextBlockStyle}"/>
+                <TextBlock x:Name="PlayerOPanelStatus" Text=""/>
             </StackPanel>
         </Grid>
         <!--#endregion-->
