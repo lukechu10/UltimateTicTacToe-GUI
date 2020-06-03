@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />
-    <Page Include="QuadrantGrid.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Images">

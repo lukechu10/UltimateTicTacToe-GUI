@@ -161,6 +161,15 @@ void MainPage::HandleGameButtonClick(IInspectable const& sender, RoutedEventArgs
 }
 
 void MainPage::UpdateGameBoardQuadrants() {
+#pragma region UpdateGameStatus
+	if (m_gameBoard->playerToMove() == Player::X) {
+		VisualStateManager::GoToState(*this, L"XTurn", false);
+	}
+	else if (m_gameBoard->playerToMove() == Player::O) {
+		VisualStateManager::GoToState(*this, L"OTurn", false);
+	}
+#pragma endregion
+
 	const int32_t nextRow = m_gameBoard->getNextCoor().first;
 	const int32_t nextCol = m_gameBoard->getNextCoor().second;
 
