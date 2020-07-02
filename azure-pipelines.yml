@@ -18,10 +18,8 @@ variables:
 steps:
 - task: VSBuild@1
   inputs:
-    platform: '${buildPlatform}'
     solution: '$(solution)'
-    configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:OutputPath=NonPackagedApp /p:UapAppxPackageBuildMode=SideLoadOnly  /p:AppxBundle=Never /p:AppxPackageOutput=$(build.ArtifactStagingDirectory)\MsixDesktopApp.msix /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:Configuration=${buildConfiguration} /p:Platform=${buildPlatform} /p:OutputPath=NonPackagedApp /p:UapAppxPackageBuildMode=SideLoadOnly  /p:AppxBundle=Never /p:AppxPackageOutput=$(build.ArtifactStagingDirectory)\MsixDesktopApp.msix /p:AppxPackageSigningEnabled=false'
 
 - task: PublishBuildArtifacts@1
   inputs:
