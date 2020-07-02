@@ -19,10 +19,10 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:Configuration=${buildConfiguration} /p:Platform=${buildPlatform} /p:OutputPath=NonPackagedApp /p:UapAppxPackageBuildMode=SideLoadOnly  /p:AppxBundle=Never /p:AppxPackageOutput=$(build.ArtifactStagingDirectory)\MsixDesktopApp.msix /p:AppxPackageSigningEnabled=false'
+    msbuildArgs: '/p:Configuration=$(buildConfiguration) /p:Platform=$(buildPlatform) /p:OutputPath=NonPackagedApp /p:UapAppxPackageBuildMode=SideLoadOnly  /p:AppxBundle=Never /p:AppxPackageOutput=$(build.ArtifactStagingDirectory)\MsixDesktopApp.msix /p:AppxPackageSigningEnabled=false'
 
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Ultimate TicTacToe (${buildPlatform}'
+    ArtifactName: 'Ultimate TicTacToe ($(buildPlatform))'
     publishLocation: 'Container'
