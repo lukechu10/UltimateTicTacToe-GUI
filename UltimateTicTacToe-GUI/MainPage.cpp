@@ -24,7 +24,7 @@ void MainPage::StartNewGame() {
 	m_gameBoard = make_unique<Game>();
 
 	RenderGameBoard();
-	ErrorMessageText().Text(L""); // reset error message
+	ErrorMessageText().Text(L"");	  // reset error message
 	NewGameControl().Flyout().Hide(); // hide flyout
 }
 
@@ -238,11 +238,17 @@ IAsyncAction MainPage::AiTurn() {
 	co_await resume_background();
 
 #pragma region ComputeMove
-	MCTS mcts(*m_gameBoard);		 // create MCTS agent
-	mcts.runSearch(1000);			 // allow 1 sec (1000 ms) for MCTS
+	constexpr int simTime = 1000; // 1000 ms = 1s
+	MCTS mcts(*m_gameBoard);	  // create MCTS agent
+	auto searchResult = mcts.runSearch(simTime);
 	auto bestMove = mcts.bestMove(); // retreive best move
+	int simCount = searchResult.visits;
 #pragma endregion
 	co_await uiThread; // switch back to calling context
+
+	// show simCount in PlayerOPanelStatus
+	PlayerOPanelStatus().Text(
+		L"Simulated " + to_hstring(simCount) + L" games in " + to_hstring((double)simTime / 1000) + L" second" + (simTime == 1000 ? L"" : L"s"));
 
 	m_gameBoard->applyMove(bestMove.bestPlay);
 
@@ -256,7 +262,7 @@ IAsyncAction MainPage::AiTurn() {
 		if (GameBoardContainer().GetRow(quadrantGrid) == bestMove.bestPlay.row && GameBoardContainer().GetColumn(quadrantGrid) == bestMove.bestPlay.col) {
 			for (const auto& quadrantChild : quadrantGrid.Children()) {
 				const auto button = quadrantChild.as<Controls::Button>();
-				
+
 				if (quadrantGrid.GetRow(button) == bestMove.bestPlay.subRow && quadrantGrid.GetColumn(button) == bestMove.bestPlay.subCol) {
 					switch (player) {
 					case Player::X:
@@ -274,7 +280,7 @@ IAsyncAction MainPage::AiTurn() {
 			}
 
 			break; // stop searching
-		}	
+		}
 	}
 
 	m_isPlayerTurn = true;
