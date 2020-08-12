@@ -33,10 +33,10 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 		bool m_isPlayerTurn = true;
 
 		// time allowed for computer to run mcts simulations
-		int simTime;
+		int m_simTime = 0;
 
 		// player cannot change sim time during a game in progress. Change value in HandleNewGameButtonClick
-		int tempSimTime;
+		int m_tempSimTime = 0;
 	};
 }
 

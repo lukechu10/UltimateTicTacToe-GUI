@@ -24,7 +24,7 @@ void MainPage::StartNewGame() {
 	m_gameBoard = make_unique<Game>();
 
 	RenderGameBoard();
-	simTime = tempSimTime; // change sim time
+	m_simTime = m_tempSimTime;		  // change sim time
 	ErrorMessageText().Text(L"");	  // reset error message
 	NewGameControl().Flyout().Hide(); // hide flyout
 }
@@ -38,8 +38,8 @@ void MainPage::RenderGameBoard() {
 
 		const size_t boardSize = m_gameBoard->getBoard().size();
 
-		for (size_t quadrantRow = 0; quadrantRow < boardSize; quadrantRow++) {
-			for (size_t quadrantCol = 0; quadrantCol < boardSize; quadrantCol++) {
+		for (int32_t quadrantRow = 0; quadrantRow < boardSize; quadrantRow++) {
+			for (int32_t quadrantCol = 0; quadrantCol < boardSize; quadrantCol++) {
 				// grid for quadrant (sub grid)
 				Controls::Grid quadrantGrid;
 				quadrantGrid.RowSpacing(3);
@@ -54,8 +54,8 @@ void MainPage::RenderGameBoard() {
 					quadrantGrid.ColumnDefinitions().Append(colDef);
 				}
 
-				for (size_t row = 0; row < boardSize; row++) {
-					for (size_t col = 0; col < boardSize; col++) {
+				for (int32_t row = 0; row < boardSize; row++) {
+					for (int32_t col = 0; col < boardSize; col++) {
 						Controls::Button button; // button control
 						hstring buttonStr;		 // button content
 
@@ -174,7 +174,7 @@ void MainPage::UpdateGameBoardQuadrants() {
 	const int32_t nextRow = m_gameBoard->getNextCoor().first;
 	const int32_t nextCol = m_gameBoard->getNextCoor().second;
 
-	for (auto& child : GameBoardContainer().Children())
+	for (auto child : GameBoardContainer().Children())
 	// iterate through all quadrant grids
 	{
 		Controls::Grid grid = child.as<Controls::Grid>();
@@ -240,7 +240,7 @@ IAsyncAction MainPage::AiTurn() {
 
 #pragma region ComputeMove
 	MCTS mcts(*m_gameBoard); // create MCTS agent
-	auto searchResult = mcts.runSearch(simTime);
+	auto searchResult = mcts.runSearch(m_simTime);
 	auto bestMove = mcts.bestMove(); // retreive best move
 	int simCount = searchResult.visits;
 #pragma endregion
@@ -248,7 +248,7 @@ IAsyncAction MainPage::AiTurn() {
 
 	// show simCount in PlayerOPanelStatus
 	PlayerOPanelStatus().Text(
-		L"Simulated " + to_hstring(simCount) + L" games in " + to_hstring((double)simTime / 1000) + L" second" + (simTime == 1000 ? L"" : L"s"));
+		L"Simulated " + to_hstring(simCount) + L" games in " + to_hstring((double)m_simTime / 1000) + L" second" + (m_simTime == 1000 ? L"" : L"s"));
 
 	m_gameBoard->applyMove(bestMove.bestPlay);
 
@@ -259,11 +259,13 @@ IAsyncAction MainPage::AiTurn() {
 	for (const auto& child : GameBoardContainer().Children()) {
 		const auto& quadrantGrid = child.as<Controls::Grid>();
 
-		if (GameBoardContainer().GetRow(quadrantGrid) == bestMove.bestPlay.row && GameBoardContainer().GetColumn(quadrantGrid) == bestMove.bestPlay.col) {
+		if (GameBoardContainer().GetRow(quadrantGrid) == (int32_t)bestMove.bestPlay.row &&
+			GameBoardContainer().GetColumn(quadrantGrid) == (int32_t)bestMove.bestPlay.col) {
 			for (const auto& quadrantChild : quadrantGrid.Children()) {
 				const auto button = quadrantChild.as<Controls::Button>();
 
-				if (quadrantGrid.GetRow(button) == bestMove.bestPlay.subRow && quadrantGrid.GetColumn(button) == bestMove.bestPlay.subCol) {
+				if (quadrantGrid.GetRow(button) == (int32_t)bestMove.bestPlay.subRow &&
+					quadrantGrid.GetColumn(button) == (int32_t)bestMove.bestPlay.subCol) {
 					switch (player) {
 					case Player::X:
 						button.Content(box_value(L"X"));
@@ -299,25 +301,25 @@ void MainPage::DifficultyComboBox_SelectionChanged(IInspectable const& sender, W
 	hstring difficultyStr = unbox_value<hstring>(item);
 
 	if (difficultyStr == L"Noob mode (50ms)") {
-		tempSimTime = 50; // 50ms
+		m_tempSimTime = 50; // 50ms
 	}
 	else if (difficultyStr == L"Supa easy (100ms)") {
-		tempSimTime = 100; // 100ms
+		m_tempSimTime = 100; // 100ms
 	}
 	else if (difficultyStr == L"Kinda easy (200ms)") {
-		tempSimTime = 200; // 200ms
+		m_tempSimTime = 200; // 200ms
 	}
 	else if (difficultyStr == L"A bit more difficult (0.8s)") {
-		tempSimTime = 800; // 0.8s
+		m_tempSimTime = 800; // 0.8s
 	}
 	else if (difficultyStr == L"Gettin' hard now (1.5s)") {
-		tempSimTime = 1500; // 1.5s
+		m_tempSimTime = 1500; // 1.5s
 	}
 	else if (difficultyStr == L"Impossible (3s)") {
-		tempSimTime = 3000; // 3s
+		m_tempSimTime = 3000; // 3s
 	}
 	else if (difficultyStr == L"God mode (5s)") {
-		tempSimTime = 5000; // 5s
+		m_tempSimTime = 5000; // 5s
 	}
 	else {
 		throw; // should never happen
