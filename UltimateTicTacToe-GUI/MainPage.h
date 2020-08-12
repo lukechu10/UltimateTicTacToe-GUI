@@ -18,8 +18,11 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 
 		void HandleGameButtonClick(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
 
+		void DifficultyComboBox_SelectionChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e);
+
 		void UpdateGameBoardQuadrants();
 		Windows::Foundation::IAsyncAction ShowGameWinner();
+
 	private:
 		// computes the best move and mutates m_gameBoard
 		Windows::Foundation::IAsyncAction AiTurn();
@@ -28,6 +31,12 @@ namespace winrt::UltimateTicTacToe_GUI::implementation {
 
 		// X always starts and X is player
 		bool m_isPlayerTurn = true;
+
+		// time allowed for computer to run mcts simulations
+		int simTime;
+
+		// player cannot change sim time during a game in progress. Change value in HandleNewGameButtonClick
+		int tempSimTime;
 	};
 }
 

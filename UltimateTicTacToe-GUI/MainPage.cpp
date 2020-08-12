@@ -24,6 +24,7 @@ void MainPage::StartNewGame() {
 	m_gameBoard = make_unique<Game>();
 
 	RenderGameBoard();
+	simTime = tempSimTime; // change sim time
 	ErrorMessageText().Text(L"");	  // reset error message
 	NewGameControl().Flyout().Hide(); // hide flyout
 }
@@ -224,8 +225,8 @@ IAsyncAction MainPage::ShowGameWinner() {
 	Controls::ContentDialogResult dialogResult = co_await winnerDialog.ShowAsync();
 
 	if (dialogResult == Controls::ContentDialogResult::Primary) {
-		// create a new game
-		StartNewGame();
+		// show start new game flyout
+		NewGameControl().Flyout().ShowAt(NewGameControl());
 	}
 	/*else if (dialogResult == Controls::ContentDialogResult::Secondary) {
 		// hide dialog
@@ -238,8 +239,7 @@ IAsyncAction MainPage::AiTurn() {
 	co_await resume_background();
 
 #pragma region ComputeMove
-	constexpr int simTime = 1000; // 1000 ms = 1s
-	MCTS mcts(*m_gameBoard);	  // create MCTS agent
+	MCTS mcts(*m_gameBoard); // create MCTS agent
 	auto searchResult = mcts.runSearch(simTime);
 	auto bestMove = mcts.bestMove(); // retreive best move
 	int simCount = searchResult.visits;
@@ -291,4 +291,35 @@ IAsyncAction MainPage::AiTurn() {
 	}
 
 	co_return;
+}
+
+
+void MainPage::DifficultyComboBox_SelectionChanged(IInspectable const& sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs const& e) {
+	IInspectable item = e.AddedItems().GetAt(0); // added item
+	hstring difficultyStr = unbox_value<hstring>(item);
+
+	if (difficultyStr == L"Noob mode (50ms)") {
+		tempSimTime = 50; // 50ms
+	}
+	else if (difficultyStr == L"Supa easy (100ms)") {
+		tempSimTime = 100; // 100ms
+	}
+	else if (difficultyStr == L"Kinda easy (200ms)") {
+		tempSimTime = 200; // 200ms
+	}
+	else if (difficultyStr == L"A bit more difficult (0.8s)") {
+		tempSimTime = 800; // 0.8s
+	}
+	else if (difficultyStr == L"Gettin' hard now (1.5s)") {
+		tempSimTime = 1500; // 1.5s
+	}
+	else if (difficultyStr == L"Impossible (3s)") {
+		tempSimTime = 3000; // 3s
+	}
+	else if (difficultyStr == L"God mode (5s)") {
+		tempSimTime = 5000; // 5s
+	}
+	else {
+		throw; // should never happen
+	}
 }

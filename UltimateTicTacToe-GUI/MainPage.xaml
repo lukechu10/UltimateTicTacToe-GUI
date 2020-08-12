@@ -89,6 +89,16 @@
                     <Flyout>
                         <StackPanel>
                             <TextBlock Style="{ThemeResource BaseTextBlockStyle}"><Run Text="Are you sure you want to start a new game?"/></TextBlock>
+                            <TextBlock Style="{ThemeResource BaseTextBlockStyle}"><Run Text="Change the difficulty"/></TextBlock>
+                            <ComboBox SelectedIndex="3" SelectionChanged="DifficultyComboBox_SelectionChanged">
+                                <x:String>Noob mode (50ms)</x:String>
+                                <x:String>Supa easy (100ms)</x:String>
+                                <x:String>Kinda easy (200ms)</x:String>
+                                <x:String>A bit more difficult (0.8s)</x:String>
+                                <x:String>Gettin' hard now (1.5s)</x:String>
+                                <x:String>Impossible (3s)</x:String>
+                                <x:String>God mode (5s)</x:String>
+                            </ComboBox>
                             <Button Margin="0,10,0,0" Click="HandleNewGameButtonClick" Content="Start a new game"/>
                         </StackPanel>
                     </Flyout>
@@ -96,10 +106,10 @@
             </Button>
             <Button Click="OpenHelp" Margin="20,20,0,0" VerticalAlignment="Top" Content="How to play"/>
         </StackPanel>
-        
+
         <TextBlock x:Name="ErrorMessageText" Text="" VerticalAlignment="Top" HorizontalAlignment="Center" Style="{ThemeResource BaseTextBlockStyle}" Foreground="#FFBD0000"/>
         <!--#endregion-->
-        
+
         <!--#region Game status-->
         <Grid x:Name="GameStatus">
             <Grid.ColumnDefinitions>
