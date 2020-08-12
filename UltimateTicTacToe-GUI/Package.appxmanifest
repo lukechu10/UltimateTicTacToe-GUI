@@ -3,7 +3,7 @@
   <Identity
     Name="b606f3bd-f3ad-467e-81d1-a664fac5ced5"
     Publisher="CN=lukew"
-    Version="0.1.0.0" />
+    Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="b606f3bd-f3ad-467e-81d1-a664fac5ced5" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>UltimateTicTacToe</DisplayName>
@@ -18,15 +18,13 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="UltimateTicTacToe_GUI.App">
-      <uap:VisualElements DisplayName="UltimateTicTacToe" Description="GUI for Ultimate TicTacToe AI"
+      <uap:VisualElements DisplayName="Ultimate TicTacToe" Description="GUI for Ultimate TicTacToe AI"
         Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:LockScreen BadgeLogo="Assets\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
     </Application>
   </Applications>
-  <Capabilities>
-    <Capability Name="internetClient" />
-  </Capabilities>
 </Package>
